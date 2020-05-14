@@ -13,12 +13,21 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
+
+const serverUrl = 'http://localhost:3000';
+const socket = io(serverUrl);
+
+
 export default {
   name: 'Login',
   data() {
     return {
       nickname: '',
     };
+  },
+  created(){
+    socket.emit('welcome message')
   },
   methods: {
     login() {
@@ -27,7 +36,7 @@ export default {
           title: 'Error!',
           text: 'No name inserted!',
           icon: 'error',
-        })
+        });
       } else {
         localStorage.setItem('nickname', this.nickname);
         this.nickname = '';
@@ -47,7 +56,7 @@ export default {
 .container{
   width: 100%;
   height: 100%;
-  position: absolute;
+  position:fixed;
 }
 .box{
   padding: 30px;
