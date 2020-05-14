@@ -34,14 +34,14 @@ socket.on("joinRoom", (room)=> {
 
 if (opponentOf(socket)) {
   socket.emit("startGame", {symbol: players[socket.id].symbol});
-  opponentOf(socket).emit("starGame", {symbol: players[opponentOf(socket).id].symbol});
+  opponentOf(socket).emit("startGame", {symbol: players[opponentOf(socket).id].symbol});
 }
 
 //event if player make a moves
-socket.on("move", data)=> {
+socket.on("move", (data)=> {
   if (opponentOf(socket)) {
     socket.emit('moveMade', data);
-    opponentOf(socket).emit("moveMad", data);
+    opponentOf(socket).emit("moveMade", data);
   }
 });
 

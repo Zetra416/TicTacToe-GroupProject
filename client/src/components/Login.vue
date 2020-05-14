@@ -22,9 +22,17 @@ export default {
   },
   methods: {
     login() {
-      localStorage.setItem('nickname', this.nickname);
-      this.nickname = '';
-      this.$emit('isLogin');
+      if (this.nickname === '') {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No name inserted!',
+          icon: 'error',
+        })
+      } else {
+        localStorage.setItem('nickname', this.nickname);
+        this.nickname = '';
+        this.$emit('isLogin');
+      }
     },
   },
 };

@@ -33,7 +33,9 @@ export default {
 .board{
   display: flex;
   flex-wrap: wrap;
-  width: 204px;
-  height: 204px;
+  width: 250px;
+  height: 250px;
+  margin: auto;
+  padding: 20px;
 }
 </style>

@@ -1,28 +1,16 @@
 <template>
   <div class="home">
     <h3>Welcome , {{ name }}</h3>
-    <button type="button" class="btn btn-primary"
-    data-toggle='modal' data-target='#modal1'>Create Room</button>
-    <Board> </Board>
+    <button v-if="!startGame" type="button" class="btn btn-primary"
+    @click.prevent="changeStatus">Create Room</button>
+    <Board v-if="startGame"> </Board>
 
-    <div class="modal" id="modal1" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>What your room name?</p>
-            <input type="text" v-model="text">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
+    <div v-if="toggleDelete && !startGame" id="" class="elements">
+      <div class="box">
+        <h2>Whats Your Room Name?</h2>
+        <input type="text" v-model="nameRoom"> <br>
+        <button class="btn btn-success" @click="playGame">Yes</button> &nbsp;
+        <button class="btn btn-info" @click="closeDelete">Cancel</button>
       </div>
     </div>
   </div>
@@ -40,10 +28,24 @@ export default {
     return {
       name: '',
       text: '',
+      toggleDelete: false,
+      nameRoom: '',
+      startGame: false,
     };
   },
   created() {
     this.name = localStorage.getItem('nickname');
+  },
+  methods: {
+    changeStatus() {
+      this.toggleDelete = true;
+    },
+    closeDelete() {
+      this.toggleDelete = false;
+    },
+    playGame() {
+      this.startGame = true;
+    },
   },
 };
 </script>
