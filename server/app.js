@@ -3,41 +3,61 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const POST = 3000;
 
+let data = {
+  board: [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
+  ],
+  players: [
+    
+  ]
+}
 
 io.on('connection', (socket)=> {
   console.log('a user connected');
 
+  socket.on('passName', (name) => {
+    if (data.players.length === 0){
+      data.players.push({ name: name, turn: true})
+    } else {
+      data.players.push({ name: name, turn: false})
+    }
+    io.emit('passName', data)
+  })
   // io.in('sendChoice', (socket)=> {
   //   console.log('end turn');
   //   socket.broadcast.emit('player-choice', 'player has chooose');
   // })
 
-  // socket.on('opponent turn', data => {
-  //   socket.broadcast.emit('opponentTurn', msg);
+  socket.on('change', (payload) => {
+    data.board = payload.board
+    for( let i = 0; i< data.players.length; i++){
+      if (data.players[i].name == payload.name){
+        data.players[i].turn = false
+      } else (
+        data.players[i].turn = true
+      )
+    }
+    io.emit('change', data);
+  })
+
+  // socket.on('passName', (data) => {
+  //   io.emit(passName, data)
   // })
 })
 
-app.get('/dashboard', (req,res)=> {
-  res.send('sukses')
-})
+// app.get('/dashboard', (req,res)=> {
+//   res.send('sukses')
+// })
 
-app.get('/games/room', (req,res)=> {
-  res.send('sukses')
-})
+// app.get('/games/room', (req,res)=> {
+//   res.send('sukses')
+// })
 
 http.listen(POST, ()=> {
   console.log(`listening on ${POST}`);
 })
-
-
-
-
-
-
-
-
-
-
 
 
 

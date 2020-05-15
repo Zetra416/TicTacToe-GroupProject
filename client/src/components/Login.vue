@@ -26,18 +26,19 @@ export default {
       nickname: '',
     };
   },
-  created(){
-    socket.emit('welcome message')
+  created() {
+    socket.emit('welcome message');
   },
   methods: {
     login() {
       if (this.nickname === '') {
-        Swal.fire({
-          title: 'Error!',
-          text: 'No name inserted!',
-          icon: 'error',
-        });
+        // Swal.fire({
+        //   title: 'Error!',
+        //   text: 'No name inserted!',
+        //   icon: 'error',
+        // });
       } else {
+        this.$store.dispatch('passName', this.nickname);
         localStorage.setItem('nickname', this.nickname);
         this.nickname = '';
         this.$emit('isLogin');
