@@ -5,7 +5,7 @@
         <Cell @click="moves(i,j)" :value="board[i][j]"> </Cell>
       </div>
     </div>
-    <h3 v-if="finished">You Win : {{name}}</h3>
+    <h3 v-if="finished">You Win : {{name}} </h3>
   </div>
 </template>
 
@@ -32,8 +32,29 @@ export default {
       finished: false,
       draw: false,
       next: 'x',
-      name: localStorage.getItem('nickname'),
+      name: '',
+      turn: false,
     };
+  },
+  created() {
+    this.$store.dispatch('listenBoard', (data) => {
+      this.board = data.board;
+      for (let i = 0; i < data.players.length; i += 1) {
+        if (data.players[i].name === localStorage.getItem('nickname')) {
+          if (data.players[i].turn === true) {
+            this.turn = true;
+          }
+        }
+      }
+      // if (data.turn === true && this.next === 'o') {
+      //   this.next = 'x';
+      // } else if (data.turn === true && this.next === 'x') {
+      //   this.next = 'o';
+      // }
+    });
+    this.$store.dispatch('boardName', (data) => {
+      this.name = data.players;
+    });
   },
   methods: {
     moves(x, y) {
@@ -42,15 +63,17 @@ export default {
       }
       this.board[x][y] = this.next;
       this.$forceUpdate();
+      this.$store.dispatch('game', { board: this.board, name: localStorage.getItem('nickname') });
       if (this.checkWin()) {
         this.finished = true;
       } else {
-        this.nextPlayer();
+        this.finished = false;
+        // this.nextPlayer();
       }
     },
-    nextPlayer() {
-      this.next = (this.next === 'x' ? 'o' : 'x');
-    },
+    // nextPlayer() {
+    //   this.next = (this.next === 'x' ? 'o' : 'x');
+    // },
     checkWin() {
       return (
         this.checkValues(this.board[0])
