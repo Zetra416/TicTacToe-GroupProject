@@ -1,4 +1,4 @@
-const app = require('express');
+const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const POST = 3000;
@@ -7,10 +7,10 @@ const POST = 3000;
 io.on('connection', (socket)=> {
   console.log('a user connected');
 
-  io.in('sendChoice', (socket)=> {
-    console.log('end turn');
-    socket.broadcast.emit('player-choice', 'player has chooose');
-  })
+  // io.in('sendChoice', (socket)=> {
+  //   console.log('end turn');
+  //   socket.broadcast.emit('player-choice', 'player has chooose');
+  // })
 
   // socket.on('opponent turn', data => {
   //   socket.broadcast.emit('opponentTurn', msg);
